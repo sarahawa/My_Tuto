@@ -27,5 +27,7 @@ public class MainActivity extends AppCompatActivity {
         TextView editText = (TextView) findViewById((R.id.monTexte));
         editText.setText("Yes!!!");
 
+        setContentView(R.layout.gestionaire2);
+
     }
 }
