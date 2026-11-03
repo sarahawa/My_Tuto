@@ -2,6 +2,10 @@ package UPsay.decouverteAndroid;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,6 +21,7 @@ public class MesDessins extends View {
     float xText, yText;
     float taille = 0;
     float x1, x2, y1, y2;
+    private int pencheH, pencheV, penche;
 
     public MesDessins(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -64,6 +69,26 @@ public class MesDessins extends View {
             }
         };
         setOnTouchListener(onTouchListener);
+
+        /* accelerometre */
+        Sensor accelerometre;
+        SensorManager m = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        accelerometre = m.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        final SensorEventListener mSensorEventListener = new SensorEventListener() {
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            }
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                pencheH = -(int)(sensorEvent.values[0]);
+                pencheV = (int)(sensorEvent.values[1]);
+                penche = pencheH*pencheH + pencheV*pencheV;
+                Log.i("pacman", "pencheH=" + pencheH + " pencheV=" + pencheV);
+            }
+        };
+
+        m.registerListener(mSensorEventListener, accelerometre, SensorManager.SENSOR_DELAY_UI);
     }
 
     public void setXYText (float x, float y){
