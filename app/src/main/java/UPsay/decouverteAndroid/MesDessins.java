@@ -1,6 +1,5 @@
 package UPsay.decouverteAndroid;
 
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 
 public class MesDessins extends View {
     float xText, yText;
+    float taille = 0;
 
     public MesDessins(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -22,6 +22,16 @@ public class MesDessins extends View {
         setXYText(600,600);
         timerHandler.postDelayed(updateTimerThread, 10);
 
+        OnTouchListener onTouchListener = new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                xText = event.getX();
+                yText = event.getY();
+                invalidate();
+                return true;
+            }
+        };
+        setOnTouchListener(onTouchListener);
     }
 
     public void setXYText (float x, float y){
@@ -42,7 +52,7 @@ public class MesDessins extends View {
         /*définir une autre couleur pour dessiner un texte*/
         p.setColor(Color.GREEN);
         /*définir la taille du texte*/
-        p.setTextSize(100);
+        p.setTextSize(taille);
         /*définir le centre du texte comme étant son origine*/
         p.setTextAlign(android.graphics.Paint.Align.CENTER);
         /*dessiner le texte en positionnant son origine au centre du View*/
@@ -50,22 +60,15 @@ public class MesDessins extends View {
         canvas.drawText(texte, xText, yText, p);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        xText = event.getX();
-        yText = event.getY();
-        invalidate();
-        return false;
-    }
-
     Handler timerHandler = new Handler();
 
     Runnable updateTimerThread = new Runnable() {
         public void run() {
             timerHandler.postDelayed(this, 100);
+            if (taille < 100) {
+                taille = taille + 2;
+            }
             invalidate();     // appel de onDraw pour redessiner
         }
     };
-
-
 }
