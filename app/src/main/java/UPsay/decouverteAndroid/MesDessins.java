@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Paint;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 public class MesDessins extends View {
     float xText, yText;
     float taille = 0;
+    float x1, x2, y1, y2;
 
     public MesDessins(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -25,8 +27,38 @@ public class MesDessins extends View {
         OnTouchListener onTouchListener = new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                xText = event.getX();
-                yText = event.getY();
+                float dx, dy;
+                String direction;
+                switch(event.getAction()) {
+                    case(MotionEvent.ACTION_DOWN):
+                        x1 = event.getX();
+                        y1 = event.getY();
+                        xText = x1;
+                        yText = y1;
+                        Log.i("pacman", "appuyé");
+                        break;
+
+                    case(MotionEvent.ACTION_UP): {
+                        x2 = event.getX();
+                        y2 = event.getY();
+                        dx = x2 - x1;
+                        dy = y2 - y1;
+                        if (Math.abs(dx) > Math.abs(dy)) {
+                            if (dx > 0)
+                                direction = "right";
+                            else
+                                direction = "left";
+                        } else {
+                            if (dy > 0)
+                                direction = "down";
+                            else
+                                direction = "up";
+                        }
+                        Log.i("pacman", "laché " + direction);
+                        Log.i("pacman", "dx = " + dx + "; dy = " + dy);
+                        break;
+                    }
+                }
                 invalidate();
                 return true;
             }
