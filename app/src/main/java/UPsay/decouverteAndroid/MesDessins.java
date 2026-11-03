@@ -7,12 +7,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.graphics.Paint;
 import android.graphics.Color;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 public class MesDessins extends View {
 
     public MesDessins(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Toast.makeText(context, "Il faut saisir une heure", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
