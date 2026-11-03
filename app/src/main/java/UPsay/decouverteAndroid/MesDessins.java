@@ -3,6 +3,7 @@ package UPsay.decouverteAndroid;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,6 +20,7 @@ public class MesDessins extends View {
         super(context, attrs);
         Toast.makeText(context, "Il faut saisir une heure", Toast.LENGTH_SHORT).show();
         setXYText(600,600);
+        timerHandler.postDelayed(updateTimerThread, 10);
 
     }
 
@@ -55,4 +57,15 @@ public class MesDessins extends View {
         invalidate();
         return false;
     }
+
+    Handler timerHandler = new Handler();
+
+    Runnable updateTimerThread = new Runnable() {
+        public void run() {
+            timerHandler.postDelayed(this, 100);
+            invalidate();     // appel de onDraw pour redessiner
+        }
+    };
+
+
 }
