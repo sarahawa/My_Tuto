@@ -4,6 +4,7 @@ package UPsay.decouverteAndroid;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.graphics.Paint;
 import android.graphics.Color;
@@ -12,11 +13,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 public class MesDessins extends View {
+    float xText, yText;
 
     public MesDessins(Context context, AttributeSet attrs) {
         super(context, attrs);
         Toast.makeText(context, "Il faut saisir une heure", Toast.LENGTH_SHORT).show();
+        setXYText(600,600);
 
+    }
+
+    public void setXYText (float x, float y){
+        xText = x;
+        yText = y;
     }
 
     @Override
@@ -37,6 +45,14 @@ public class MesDessins extends View {
         p.setTextAlign(android.graphics.Paint.Align.CENTER);
         /*dessiner le texte en positionnant son origine au centre du View*/
         String texte = "Bonjour MONDE";
-        canvas.drawText(texte, getWidth()/2, getHeight()/2, p);
+        canvas.drawText(texte, xText, yText, p);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        xText = event.getX();
+        yText = event.getY();
+        invalidate();
+        return false;
     }
 }
